@@ -1,0 +1,16 @@
+<h1>Modifier la tâche</h1>
+
+<%= form_for @task do |t| %>
+    <label>Nom de la tâche</label>
+    <%= t.text_field :name,class: "form-control" %>
+    <label>Detail de la tâche</label>
+    <%= t.text_area :details,class: "form-control" %>
+    <label>Date Limite de la tâche</label>
+    <%= t.date_field :limit, min: Date.today, class: "form-control" %>
+    <label>Niveau d'importante de la tâche</label>
+    <%= t.text_field :level,class: "form-control" %>
+    <br>
+    <button type="submit" class="btn btn-primary">Modifier la tâche</button>
+<% end %>
+<br>
+<a href="<% tasks_path %>" class="btn btn-info">Revenir à la liste des tâches</a>

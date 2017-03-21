@@ -1,0 +1,22 @@
+<a href="<%= new_task_path %>" class="btn btn-primary btn-lg">Créer une nouvelle tâche</a>
+
+<h1>Listes des tâches à effectués</h1>
+
+
+<% @tasks.each do |t| %>
+    <% if t.check = 0 %>
+      <input type="checkbox" name="check" value="0">
+    <% end %>
+    <label><strong>Nom de la tâche :</strong></label>
+    <%= t.name %>
+    <label><strong>details de la tâche :</strong></label>
+    <%= t.details %>
+    <label><strong>Date limite de la tâche :</strong></label>
+    <%= t.limit %>
+    <label><strong>Niveau :</strong></label>
+    <%= t.level %>
+    <br>
+    <a href="<%= task_path(t.id) %>" class="btn btn-primary">Voir la tâche</a>
+    <a href="<%= edit_task_path(t.id) %>" class="btn btn-default">Modifier la tâche</a>
+    <a href="<%= edit_task_path(t.id) %>" class="btn btn-danger" data-confirm="etes vous sur" data-method="delete">Supprimer la tâche</a>
+<% end %>
