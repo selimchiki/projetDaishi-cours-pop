@@ -10,14 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320212749) do
+ActiveRecord::Schema.define(version: 20170325230524) do
+
+  create_table "levels", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "weight"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "tasks", force: :cascade do |t|
     t.string  "name"
     t.text    "details"
     t.date    "limit"
-    t.string  "level",   limit: 1, default: "0"
-    t.integer "check",   limit: 1, default: 0
+    t.string  "level",    limit: 1, default: "0"
+    t.integer "check",    limit: 1, default: 0
+    t.integer "level_id"
+    t.index ["level_id"], name: "index_tasks_on_level_id"
   end
 
 end
