@@ -35,7 +35,7 @@ class TasksController < ApplicationController
   private
 
   def post_params
-    params.require(:task).permit(:name, :details, :limit, :level)
+    params.require(:task).permit(:name, :details, :limit, :level_id)
   end
 
 end

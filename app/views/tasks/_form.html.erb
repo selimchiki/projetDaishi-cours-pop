@@ -6,9 +6,9 @@
     <label>Date Limite de la tâche</label>
     <%= t.date_field :limit, min: Date.today, class: "form-control" %>
     <label>Niveau d'importante de la tâche</label>
-    <%= t.text_field :level,class: "form-control" %>
+    <%= t.collection_select :level_id, Level.all, :id, :name, {}, {} %>
     <br>
-    <button type="submit" class="btn btn-primary">Modifier la tâche</button>
+    <%= t.submit nil, class: 'btn btn-primary' %>
 <% end %>
 <br>
 <a href="<% tasks_path %>" class="btn btn-info">Revenir à la liste des tâches</a>
