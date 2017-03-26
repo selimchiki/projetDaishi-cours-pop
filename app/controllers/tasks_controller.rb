@@ -1,8 +1,8 @@
 class TasksController < ApplicationController
 
   def index
-    @tasks = Task.all
-    @tasks.where(check: 0)
+    @incomplete_tasks = Task.incomplete
+    @complete_tasks = Task.complete
   end
 
   def show
@@ -22,6 +22,7 @@ class TasksController < ApplicationController
   def destroy
     @task = Task.find(params[:id])
     @task.destroy
+    redirect_to tasks_path
   end
 
   def new
@@ -30,6 +31,12 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.create(post_params)
+    redirect_to tasks_path
+  end
+
+  def complete
+    Task.where(id: params[:task_id]).update_all(complete: true)
+    redirect_to tasks_path
   end
 
   private

@@ -6,4 +6,6 @@ Rails.application.routes.draw do
 
   resources :tasks
 
+  put 'complete_task', to: 'tasks#complete', as: :complete_tasks
+
 end
