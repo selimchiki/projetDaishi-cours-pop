@@ -35,7 +35,7 @@ class TasksController < ApplicationController
   end
 
   def complete
-    Task.where(id: params[:task_id]).update_all(complete: true)
+    Task.where(id: params[:task_ids]).update_all(check: true)
     redirect_to tasks_path
   end
 

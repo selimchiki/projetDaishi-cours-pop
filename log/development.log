@@ -1969,3 +1969,1316 @@ Migrating to AddLevelToTasks (20170325230524)
             FROM sqlite_temp_master
             WHERE name='index_tasks_on_level_id' AND type='index'
 [0m
+Started GET "/" for ::1 at 2017-03-26 03:16:20 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (21.4ms)
+Completed 200 OK in 417ms (Views: 388.3ms | ActiveRecord: 0.7ms)
+
+
+Started PUT "/complete_task" for ::1 at 2017-03-26 03:16:24 +0200
+Processing by TasksController#complete as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"5e+xczQRDDFJAAYpJ/djy2IrzCyJYqOnXxB08mBPAdgBjnYh+toNnmB+ls8Po3hDrfNsetuXnQxWys65TepFig==", "task_id"=>{"id"=>"1"}, "commit"=>"Mark as Complete"}
+  [1m[35mSQL (0.4ms)[0m  [1m[33mUPDATE "tasks" SET "check" = 1 WHERE "tasks"."id" = ?[0m  [["id", nil]]
+Redirected to http://localhost:3000/tasks
+Completed 302 Found in 3ms (ActiveRecord: 0.4ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 03:16:24 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (2.9ms)
+Completed 200 OK in 36ms (Views: 32.4ms | ActiveRecord: 0.3ms)
+
+
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+DEPRECATION WARNING: Passing #original_exception is deprecated and has no effect. Exceptions will automatically capture the original exception. (called from require at /Users/selimchiki/github/exo-daishi-site-tache/projetDaishi-cours-pop/bin/rails:9)
+  [1m[35m (2.0ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateTasks (20170320210230)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "details" text, "limit" date, "level" integer(1) DEFAULT 0)[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170320210230"]]
+  [1m[35m (1.3ms)[0m  [1m[36mcommit transaction[0m
+Migrating to ModifyColumnTasks (20170320212749)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "tasks" ADD "check" integer(1) DEFAULT 0[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "atasks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "details" text, "limit" date, "level" integer(1) DEFAULT 0, "check" integer(1) DEFAULT 0)[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "atasks" ("id","name","details","limit","level","check")
+                     SELECT "id","name","details","limit","level","check" FROM "tasks"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "tasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "details" text, "limit" date, "level" varchar(1) DEFAULT '0', "check" integer(1) DEFAULT 0)[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "tasks" ("id","name","details","limit","level","check")
+                     SELECT "id","name","details","limit","level","check" FROM "atasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "atasks"[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170320212749"]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateLevels (20170325230417)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "levels" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "weight" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170325230417"]]
+  [1m[35m (2.3ms)[0m  [1m[36mcommit transaction[0m
+Migrating to AddLevelToTasks (20170325230524)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "tasks" ADD "level_id" integer[0m
+  [1m[35m (0.0ms)[0m  [1m[34mselect sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_tasks_on_level_id" ON "tasks" ("level_id")[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170325230524"]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", 2017-03-26 01:52:15 UTC], ["updated_at", 2017-03-26 01:52:15 UTC]]
+  [1m[35m (2.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_tasks_on_level_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_tasks_on_level_id' AND type='index'
+[0m
+Started GET "/tasks" for ::1 at 2017-03-26 03:52:27 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (13.5ms)
+Completed 200 OK in 280ms (Views: 246.7ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/tasks/new" for ::1 at 2017-03-26 03:52:31 +0200
+Processing by TasksController#new as HTML
+  Rendering tasks/new.html.erb within layouts/application
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT "levels".* FROM "levels"[0m
+  Rendered tasks/_form.html.erb (77.3ms)
+  Rendered tasks/new.html.erb within layouts/application (81.6ms)
+Completed 200 OK in 125ms (Views: 110.3ms | ActiveRecord: 1.3ms)
+
+
+Started GET "/levels" for ::1 at 2017-03-26 03:52:44 +0200
+Processing by LevelsController#index as HTML
+  Rendering levels/index.html.erb within layouts/application
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT "levels".* FROM "levels"[0m
+  Rendered levels/index.html.erb within layouts/application (1.3ms)
+Completed 200 OK in 48ms (Views: 43.0ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/levels/new" for ::1 at 2017-03-26 03:52:46 +0200
+Processing by LevelsController#new as HTML
+  Rendering levels/new.html.erb within layouts/application
+  Rendered levels/_form.html.erb (9.2ms)
+  Rendered levels/new.html.erb within layouts/application (13.8ms)
+Completed 200 OK in 52ms (Views: 37.9ms | ActiveRecord: 0.3ms)
+
+
+Started POST "/levels" for ::1 at 2017-03-26 03:52:53 +0200
+Processing by LevelsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"p1EUONpequbPT5rMqXDorgRVO+j6sr1/Inbbj1TwosGFzcFaFInyl9MOGGoa0yczbICdQpMJkAoxAKL7+NaueQ==", "level"=>{"name"=>"Tres important", "weight"=>"1000"}, "commit"=>"Create Level"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Tres important"], ["weight", 1000], ["created_at", 2017-03-26 01:52:53 UTC], ["updated_at", 2017-03-26 01:52:53 UTC]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/levels/1
+Completed 302 Found in 7ms (ActiveRecord: 2.5ms)
+
+
+Started GET "/levels/1" for ::1 at 2017-03-26 03:52:53 +0200
+Processing by LevelsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mLevel Load (0.2ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering levels/show.html.erb within layouts/application
+  Rendered levels/show.html.erb within layouts/application (0.9ms)
+Completed 200 OK in 29ms (Views: 21.7ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/tasks/new" for ::1 at 2017-03-26 03:52:56 +0200
+Processing by TasksController#new as HTML
+  Rendering tasks/new.html.erb within layouts/application
+  [1m[36mLevel Load (0.2ms)[0m  [1m[34mSELECT "levels".* FROM "levels"[0m
+  Rendered tasks/_form.html.erb (3.5ms)
+  Rendered tasks/new.html.erb within layouts/application (7.0ms)
+Completed 200 OK in 41ms (Views: 36.0ms | ActiveRecord: 0.2ms)
+
+
+Started POST "/tasks" for ::1 at 2017-03-26 03:53:11 +0200
+Processing by TasksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"pt802k0YECHJnwJeZejif6rTQxOBStLAGOmH9FiIhcu4i0ZWwkTntXxdH/QwAY3DgevplIWNbr3eYom2yEbTvg==", "task"=>{"name"=>"Tache 1", "details"=>"Tache 1", "limit"=>"2017-03-26", "level_id"=>"1"}, "commit"=>"Create Task"}
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "limit", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Tache 1"], ["details", "Tache 1"], ["limit", Sun, 26 Mar 2017], ["level_id", 1]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/tasks
+Completed 302 Found in 36ms (ActiveRecord: 2.4ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 03:53:11 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (2.3ms)
+Completed 200 OK in 31ms (Views: 28.6ms | ActiveRecord: 0.3ms)
+
+
+Started PUT "/complete_task" for ::1 at 2017-03-26 03:53:13 +0200
+Processing by TasksController#complete as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"6/GCHCf0Bit8IRogEaKYNhIUEUBPN9tZxJDFFr30GkMPkEVO6T8HhFVfisY59oO+3cyxFh3C5fLNSn9dkFFeEQ==", "task_ids"=>"1", "commit"=>"Mark as Complete"}
+  [1m[35mSQL (3.2ms)[0m  [1m[33mUPDATE "tasks" SET "check" = 1 WHERE "tasks"."id" = ?[0m  [["id", 1]]
+Redirected to http://localhost:3000/tasks
+Completed 302 Found in 5ms (ActiveRecord: 3.2ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 03:53:13 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (2.1ms)
+Completed 200 OK in 26ms (Views: 23.3ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 03:54:17 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (2.7ms)
+Completed 200 OK in 36ms (Views: 32.0ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 03:54:19 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (2.3ms)
+Completed 200 OK in 33ms (Views: 30.8ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 03:54:21 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (2.5ms)
+Completed 200 OK in 42ms (Views: 38.3ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 03:54:22 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (2.8ms)
+Completed 200 OK in 40ms (Views: 37.8ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 03:54:23 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (3.0ms)
+Completed 200 OK in 41ms (Views: 37.4ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 03:55:23 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (13.0ms)
+Completed 500 Internal Server Error in 20ms (ActiveRecord: 0.3ms)
+
+
+  
+ActionView::Template::Error (No route matches {:action=>"edit", :controller=>"tasks"} missing required keys: [:id]):
+    17:       <li>
+    18:         <%= task.name %>
+    19:       </li>
+    20:       <a href="<%= edit_task_path %>">Editer la tache</a>
+    21:   <% end %>
+    22: </ul>
+  
+app/views/tasks/index.html.erb:20:in `block in _app_views_tasks_index_html_erb__1553178572767755668_70270036177840'
+app/views/tasks/index.html.erb:16:in `_app_views_tasks_index_html_erb__1553178572767755668_70270036177840'
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (4.7ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (3.0ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.5ms)
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (113.3ms)
+Started GET "/tasks" for ::1 at 2017-03-26 03:55:49 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (2.9ms)
+Completed 200 OK in 42ms (Views: 38.5ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/tasks/1/edit" for ::1 at 2017-03-26 03:55:51 +0200
+Processing by TasksController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering tasks/edit.html.erb within layouts/application
+  [1m[36mLevel Load (0.2ms)[0m  [1m[34mSELECT "levels".* FROM "levels"[0m
+  Rendered tasks/_form.html.erb (6.6ms)
+  Rendered tasks/edit.html.erb within layouts/application (10.8ms)
+Completed 200 OK in 51ms (Views: 44.6ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 03:59:11 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (5.4ms)
+Completed 500 Internal Server Error in 14ms (ActiveRecord: 0.3ms)
+
+
+  
+ActionView::Template::Error (No route matches {:action=>"show", :controller=>"tasks"} missing required keys: [:id]):
+    17:       <li>
+    18:         <%= task.name %>
+    19:       </li>
+    20:       <a href="<%= task_path %>" class="btn btn-primary">Voir la tache</a>
+    21:       <a href="<%= edit_task_path(task.id) %>" class="btn btn-default">Editer la tache</a>
+    22:       <a href="<%= edit_task_path(task.id) %>" class="btn btn-danger" data-confirm="Etes vous sur?" data-method="delete">Supprimer la tache</a>
+    23:   <% end %>
+  
+app/views/tasks/index.html.erb:20:in `block in _app_views_tasks_index_html_erb__1553178572767755668_70269996581520'
+app/views/tasks/index.html.erb:16:in `_app_views_tasks_index_html_erb__1553178572767755668_70269996581520'
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (4.9ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.1ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.6ms)
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (78.4ms)
+Started GET "/tasks" for ::1 at 2017-03-26 03:59:29 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (2.3ms)
+Completed 200 OK in 38ms (Views: 35.0ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/tasks/1" for ::1 at 2017-03-26 03:59:31 +0200
+Processing by TasksController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering tasks/show.html.erb within layouts/application
+  [1m[36mLevel Load (0.2ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered tasks/show.html.erb within layouts/application (4.6ms)
+Completed 200 OK in 54ms (Views: 47.6ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 03:59:34 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (3.6ms)
+Completed 200 OK in 57ms (Views: 52.9ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/tasks/1/edit" for ::1 at 2017-03-26 03:59:35 +0200
+Processing by TasksController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering tasks/edit.html.erb within layouts/application
+  [1m[36mLevel Load (0.2ms)[0m  [1m[34mSELECT "levels".* FROM "levels"[0m
+  Rendered tasks/_form.html.erb (5.0ms)
+  Rendered tasks/edit.html.erb within layouts/application (8.1ms)
+Completed 200 OK in 49ms (Views: 43.8ms | ActiveRecord: 0.3ms)
+
+
+Started DELETE "/tasks/1/edit" for ::1 at 2017-03-26 03:59:42 +0200
+  
+ActionController::RoutingError (No route matches [DELETE] "/tasks/1/edit"):
+  
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.4.0) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.4.0) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.4.0) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.4.0) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.0) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/method_override.rb:22:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.2ms)
+  Rendered collection of /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/routes/_route.html.erb [18 times] (5.2ms)
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/routes/_table.html.erb (3.2ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.3ms)
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (108.3ms)
+Started DELETE "/tasks/1/edit" for ::1 at 2017-03-26 04:01:26 +0200
+  
+ActionController::RoutingError (No route matches [DELETE] "/tasks/1/edit"):
+  
+actionpack (5.0.2) lib/action_dispatch/middleware/debug_exceptions.rb:53:in `call'
+web-console (3.4.0) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.4.0) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.4.0) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.4.0) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.0.2) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.0.2) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.0.2) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.0) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/request_id.rb:24:in `call'
+rack (2.0.1) lib/rack/method_override.rb:22:in `call'
+rack (2.0.1) lib/rack/runtime.rb:22:in `call'
+activesupport (5.0.2) lib/active_support/cache/strategy/local_cache_middleware.rb:28:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.0.2) lib/action_dispatch/middleware/static.rb:136:in `call'
+rack (2.0.1) lib/rack/sendfile.rb:111:in `call'
+railties (5.0.2) lib/rails/engine.rb:522:in `call'
+puma (3.8.2) lib/puma/configuration.rb:224:in `call'
+puma (3.8.2) lib/puma/server.rb:600:in `handle_request'
+puma (3.8.2) lib/puma/server.rb:435:in `process_client'
+puma (3.8.2) lib/puma/server.rb:299:in `block in run'
+puma (3.8.2) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.3ms)
+  Rendered collection of /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/routes/_route.html.erb [18 times] (4.4ms)
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/routes/_table.html.erb (1.1ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (1.0ms)
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/routing_error.html.erb within rescues/layout (94.1ms)
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE TABLE "levels" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "weight" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (2.8ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "details" text, "limit" date, "level" varchar(1) DEFAULT '0', "check" integer(1) DEFAULT 0, "level_id" integer)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mselect sqlite_version(*)[0m
+  [1m[35m (2.2ms)[0m  [1m[35mCREATE  INDEX "index_tasks_on_level_id" ON "tasks" ("level_id")[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT version FROM "schema_migrations"[0m
+  [1m[35m (1.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20170325230524)[0m
+  [1m[35m (1.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20170320210230),
+(20170320212749),
+(20170325230417);
+
+[0m
+  [1m[35m (2.7ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", 2017-03-26 02:04:40 UTC], ["updated_at", 2017-03-26 02:04:40 UTC]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (2.1ms)[0m  [1m[35mCREATE TABLE "levels" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "weight" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "details" text, "limit" date, "level" varchar(1) DEFAULT '0', "check" integer(1) DEFAULT 0, "level_id" integer)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mselect sqlite_version(*)[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE  INDEX "index_tasks_on_level_id" ON "tasks" ("level_id")[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT version FROM "schema_migrations"[0m
+  [1m[35m (1.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20170325230524)[0m
+  [1m[35m (2.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20170320210230),
+(20170320212749),
+(20170325230417);
+
+[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", 2017-03-26 02:04:40 UTC], ["updated_at", 2017-03-26 02:04:40 UTC]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "In a Glass Darkly"], ["weight", 24], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "In a Glass Darkly"], ["weight", 24], ["created_at", 2017-03-26 02:04:41 UTC], ["updated_at", 2017-03-26 02:04:41 UTC]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "To a God Unknown"], ["weight", 12], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "To a God Unknown"], ["weight", 12], ["created_at", 2017-03-26 02:04:41 UTC], ["updated_at", 2017-03-26 02:04:41 UTC]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Look Homeward, Angel"], ["weight", 12], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Look Homeward, Angel"], ["weight", 12], ["created_at", 2017-03-26 02:04:41 UTC], ["updated_at", 2017-03-26 02:04:41 UTC]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "The Last Enemy"], ["weight", 29], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "The Last Enemy"], ["weight", 29], ["created_at", 2017-03-26 02:04:41 UTC], ["updated_at", 2017-03-26 02:04:41 UTC]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Ring of Bright Water"], ["weight", 8], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Ring of Bright Water"], ["weight", 8], ["created_at", 2017-03-26 02:04:41 UTC], ["updated_at", 2017-03-26 02:04:41 UTC]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Jesting Pilate"], ["weight", 25], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Jesting Pilate"], ["weight", 25], ["created_at", 2017-03-26 02:04:41 UTC], ["updated_at", 2017-03-26 02:04:41 UTC]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Far From the Madding Crowd"], ["weight", 5], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Far From the Madding Crowd"], ["weight", 5], ["created_at", 2017-03-26 02:04:41 UTC], ["updated_at", 2017-03-26 02:04:41 UTC]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "East of Eden"], ["weight", 5], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "East of Eden"], ["weight", 5], ["created_at", 2017-03-26 02:04:41 UTC], ["updated_at", 2017-03-26 02:04:41 UTC]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Infinite Jest"], ["weight", 18], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Infinite Jest"], ["weight", 18], ["created_at", 2017-03-26 02:04:41 UTC], ["updated_at", 2017-03-26 02:04:41 UTC]]
+  [1m[35m (2.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Noli Me Tangere"], ["weight", 16], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Noli Me Tangere"], ["weight", 16], ["created_at", 2017-03-26 02:04:41 UTC], ["updated_at", 2017-03-26 02:04:41 UTC]]
+  [1m[35m (1.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "After Many a Summer Dies the Swan"], ["level_id", 7], ["details", "Magni dolor temporibus consequatur ut qui debitis."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "After Many a Summer Dies the Swan"], ["details", "Magni dolor temporibus consequatur ut qui debitis."], ["level_id", 7]]
+  [1m[35m (2.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "The Moon by Night"], ["level_id", 6], ["details", "Quidem iure laborum quis et non."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "The Moon by Night"], ["details", "Quidem iure laborum quis et non."], ["level_id", 6]]
+  [1m[35m (1.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Specimen Days"], ["level_id", 9], ["details", "Ipsa aliquid vel perferendis quis eaque illo voluptas sit."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Specimen Days"], ["details", "Ipsa aliquid vel perferendis quis eaque illo voluptas sit."], ["level_id", 9]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "The Heart Is Deceitful Above All Things"], ["level_id", 10], ["details", "Aperiam expedita perspiciatis dolor."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "The Heart Is Deceitful Above All Things"], ["details", "Aperiam expedita perspiciatis dolor."], ["check", 1], ["level_id", 10]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "A Monstrous Regiment of Women"], ["level_id", 6], ["details", "Est totam voluptas sint nobis."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "A Monstrous Regiment of Women"], ["details", "Est totam voluptas sint nobis."], ["check", 1], ["level_id", 6]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "After Many a Summer Dies the Swan"], ["level_id", 7], ["details", "Aut ad pariatur expedita est veniam eveniet."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "After Many a Summer Dies the Swan"], ["details", "Aut ad pariatur expedita est veniam eveniet."], ["level_id", 7]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "I Sing the Body Electric"], ["level_id", 7], ["details", "Possimus quis qui quae a sit quia sunt."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "I Sing the Body Electric"], ["details", "Possimus quis qui quae a sit quia sunt."], ["check", 1], ["level_id", 7]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Ah, Wilderness!"], ["level_id", 4], ["details", "Et laboriosam quia recusandae doloribus rerum."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Ah, Wilderness!"], ["details", "Et laboriosam quia recusandae doloribus rerum."], ["check", 1], ["level_id", 4]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Little Hands Clapping"], ["level_id", 8], ["details", "Qui ut ut et unde."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Little Hands Clapping"], ["details", "Qui ut ut et unde."], ["check", 1], ["level_id", 8]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Alone on a Wide, Wide Sea"], ["level_id", 5], ["details", "Atque aut ullam quia est."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Alone on a Wide, Wide Sea"], ["details", "Atque aut ullam quia est."], ["level_id", 5]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Tirra Lirra by the River"], ["level_id", 8], ["details", "Facilis et sed optio eveniet minus odit eaque."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Tirra Lirra by the River"], ["details", "Facilis et sed optio eveniet minus odit eaque."], ["level_id", 8]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "A Scanner Darkly"], ["level_id", 2], ["details", "Omnis commodi aut ad maxime."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "A Scanner Darkly"], ["details", "Omnis commodi aut ad maxime."], ["level_id", 2]]
+  [1m[35m (2.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "No Highway"], ["level_id", 4], ["details", "Sit ratione odio quia distinctio."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "No Highway"], ["details", "Sit ratione odio quia distinctio."], ["check", 1], ["level_id", 4]]
+  [1m[35m (2.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "A Passage to India"], ["level_id", 10], ["details", "Distinctio et dolor nihil aut expedita."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "A Passage to India"], ["details", "Distinctio et dolor nihil aut expedita."], ["level_id", 10]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Have His Carcase"], ["level_id", 6], ["details", "Commodi et laborum maxime."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Have His Carcase"], ["details", "Commodi et laborum maxime."], ["check", 1], ["level_id", 6]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Dying of the Light"], ["level_id", 2], ["details", "Et rerum ullam eligendi quaerat aliquid perspiciatis doloribus molestias."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Dying of the Light"], ["details", "Et rerum ullam eligendi quaerat aliquid perspiciatis doloribus molestias."], ["level_id", 2]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Tiger! Tiger!"], ["level_id", 2], ["details", "In nesciunt qui laudantium voluptatem."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Tiger! Tiger!"], ["details", "In nesciunt qui laudantium voluptatem."], ["check", 1], ["level_id", 2]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Clouds of Witness"], ["level_id", 8], ["details", "Ut accusantium ut iure molestiae voluptatibus enim qui."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Clouds of Witness"], ["details", "Ut accusantium ut iure molestiae voluptatibus enim qui."], ["level_id", 8]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Ah, Wilderness!"], ["level_id", 2], ["details", "Doloremque recusandae omnis occaecati consectetur alias quia."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Ah, Wilderness!"], ["details", "Doloremque recusandae omnis occaecati consectetur alias quia."], ["level_id", 2]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Vile Bodies"], ["level_id", 6], ["details", "Facilis optio voluptas repudiandae rerum cumque magnam."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Vile Bodies"], ["details", "Facilis optio voluptas repudiandae rerum cumque magnam."], ["check", 1], ["level_id", 6]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "The Last Temptation"], ["weight", 10], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "The Last Temptation"], ["weight", 10], ["created_at", 2017-03-26 02:04:51 UTC], ["updated_at", 2017-03-26 02:04:51 UTC]]
+  [1m[35m (3.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "The Violent Bear It Away"], ["weight", 11], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "The Violent Bear It Away"], ["weight", 11], ["created_at", 2017-03-26 02:04:51 UTC], ["updated_at", 2017-03-26 02:04:51 UTC]]
+  [1m[35m (1.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Noli Me Tangere"], ["weight", 21], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Noli Me Tangere"], ["weight", 21], ["created_at", 2017-03-26 02:04:51 UTC], ["updated_at", 2017-03-26 02:04:51 UTC]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Recalled to Life"], ["weight", 17], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Recalled to Life"], ["weight", 17], ["created_at", 2017-03-26 02:04:51 UTC], ["updated_at", 2017-03-26 02:04:51 UTC]]
+  [1m[35m (1.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Shall not Perish"], ["weight", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Shall not Perish"], ["weight", 1], ["created_at", 2017-03-26 02:04:51 UTC], ["updated_at", 2017-03-26 02:04:51 UTC]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "From Here to Eternity"], ["weight", 13], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "From Here to Eternity"], ["weight", 13], ["created_at", 2017-03-26 02:04:51 UTC], ["updated_at", 2017-03-26 02:04:51 UTC]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "In Dubious Battle"], ["weight", 2], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "In Dubious Battle"], ["weight", 2], ["created_at", 2017-03-26 02:04:51 UTC], ["updated_at", 2017-03-26 02:04:51 UTC]]
+  [1m[35m (1.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Many Waters"], ["weight", 12], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Many Waters"], ["weight", 12], ["created_at", 2017-03-26 02:04:51 UTC], ["updated_at", 2017-03-26 02:04:51 UTC]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Tirra Lirra by the River"], ["weight", 10], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Tirra Lirra by the River"], ["weight", 10], ["created_at", 2017-03-26 02:04:51 UTC], ["updated_at", 2017-03-26 02:04:51 UTC]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "As I Lay Dying"], ["weight", 23], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "As I Lay Dying"], ["weight", 23], ["created_at", 2017-03-26 02:04:51 UTC], ["updated_at", 2017-03-26 02:04:51 UTC]]
+  [1m[35m (2.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "No Highway"], ["level_id", 4], ["details", "Quo quia est explicabo asperiores tempore et eos."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "No Highway"], ["details", "Quo quia est explicabo asperiores tempore et eos."], ["check", 1], ["level_id", 4]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Quo Vadis"], ["level_id", 2], ["details", "Iusto dignissimos velit ea libero porro."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Quo Vadis"], ["details", "Iusto dignissimos velit ea libero porro."], ["level_id", 2]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Pale Kings and Princes"], ["level_id", 2], ["details", "Consequuntur nihil consequatur magnam voluptatum sed laboriosam voluptatem."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Pale Kings and Princes"], ["details", "Consequuntur nihil consequatur magnam voluptatum sed laboriosam voluptatem."], ["level_id", 2]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "The Other Side of Silence"], ["level_id", 8], ["details", "Quia aut ducimus fugiat dolor quia a."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "The Other Side of Silence"], ["details", "Quia aut ducimus fugiat dolor quia a."], ["level_id", 8]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "In a Dry Season"], ["level_id", 4], ["details", "Esse natus tempora quod illo delectus in dolorem."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "In a Dry Season"], ["details", "Esse natus tempora quod illo delectus in dolorem."], ["check", 1], ["level_id", 4]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Beyond the Mexique Bay"], ["level_id", 3], ["details", "Quas eveniet suscipit exercitationem odio quam voluptatem ea cumque."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Beyond the Mexique Bay"], ["details", "Quas eveniet suscipit exercitationem odio quam voluptatem ea cumque."], ["level_id", 3]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Beneath the Bleeding"], ["level_id", 10], ["details", "Dolorem optio sapiente qui at ut quaerat."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 10], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Beneath the Bleeding"], ["details", "Dolorem optio sapiente qui at ut quaerat."], ["check", 1], ["level_id", 10]]
+  [1m[35m (3.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Stranger in a Strange Land"], ["level_id", 10], ["details", "Delectus aut et ipsam."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 10], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Stranger in a Strange Land"], ["details", "Delectus aut et ipsam."], ["check", 1], ["level_id", 10]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "It's a Battlefield"], ["level_id", 3], ["details", "At deleniti autem atque impedit minima."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "It's a Battlefield"], ["details", "At deleniti autem atque impedit minima."], ["level_id", 3]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "The Yellow Meads of Asphodel"], ["level_id", 3], ["details", "Fugiat soluta quia dolorum aperiam voluptate asperiores quo."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "The Yellow Meads of Asphodel"], ["details", "Fugiat soluta quia dolorum aperiam voluptate asperiores quo."], ["level_id", 3]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "The Heart Is a Lonely Hunter"], ["level_id", 9], ["details", "Perspiciatis occaecati nulla unde accusantium et deleniti ipsa."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 9], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "The Heart Is a Lonely Hunter"], ["details", "Perspiciatis occaecati nulla unde accusantium et deleniti ipsa."], ["check", 1], ["level_id", 9]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "A Many-Splendoured Thing"], ["level_id", 1], ["details", "Et voluptas eum molestiae."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "A Many-Splendoured Thing"], ["details", "Et voluptas eum molestiae."], ["level_id", 1]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "O Jerusalem!"], ["level_id", 3], ["details", "Aut quo est sed itaque ea incidunt non."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "O Jerusalem!"], ["details", "Aut quo est sed itaque ea incidunt non."], ["check", 1], ["level_id", 3]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "The Soldier's Art"], ["level_id", 5], ["details", "Tenetur beatae molestiae sit numquam minima iste et."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[35mSQL (0.7ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "The Soldier's Art"], ["details", "Tenetur beatae molestiae sit numquam minima iste et."], ["check", 1], ["level_id", 5]]
+  [1m[35m (1.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Tiger! Tiger!"], ["level_id", 5], ["details", "Veniam in reiciendis ipsam."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Tiger! Tiger!"], ["details", "Veniam in reiciendis ipsam."], ["check", 1], ["level_id", 5]]
+  [1m[35m (2.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "The Parliament of Man"], ["level_id", 3], ["details", "Quibusdam illo amet exercitationem recusandae mollitia ea minima."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "The Parliament of Man"], ["details", "Quibusdam illo amet exercitationem recusandae mollitia ea minima."], ["check", 1], ["level_id", 3]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Tender Is the Night"], ["level_id", 1], ["details", "Aliquam animi fugiat velit pariatur quia voluptates et tempora."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Tender Is the Night"], ["details", "Aliquam animi fugiat velit pariatur quia voluptates et tempora."], ["level_id", 1]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Death Be Not Proud"], ["level_id", 3], ["details", "Nam aut error possimus."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Death Be Not Proud"], ["details", "Nam aut error possimus."], ["check", 1], ["level_id", 3]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Gone with the Wind"], ["level_id", 1], ["details", "Eligendi eos doloribus vero quidem delectus optio est id."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Gone with the Wind"], ["details", "Eligendi eos doloribus vero quidem delectus optio est id."], ["check", 1], ["level_id", 1]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Carrion Comfort"], ["level_id", 6], ["details", "Aliquam id quo nostrum veritatis aut ut suscipit."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 6], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Carrion Comfort"], ["details", "Aliquam id quo nostrum veritatis aut ut suscipit."], ["level_id", 6]]
+  [1m[35m (2.1ms)[0m  [1m[36mcommit transaction[0m
+Started GET "/tasks" for ::1 at 2017-03-26 04:05:00 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.6ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  Rendered tasks/index.html.erb within layouts/application (3.6ms)
+Completed 500 Internal Server Error in 14ms (ActiveRecord: 0.6ms)
+
+
+  
+ActionView::Template::Error (SQLite3::IOException: disk I/O error: SELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?):
+    1: <h1>Incomplete Tasks</h1>
+    2: <%= form_tag(complete_tasks_path, method: :put)  do %>
+    3:     <% for task in @incomplete_tasks %>
+    4:         <ul>
+    5:           <li>
+    6:             <%= check_box_tag 'task_ids', task.id %>
+  
+app/views/tasks/index.html.erb:3:in `block in _app_views_tasks_index_html_erb__1553178572767755668_70269991442240'
+app/views/tasks/index.html.erb:2:in `_app_views_tasks_index_html_erb__1553178572767755668_70269991442240'
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (5.1ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.3ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.8ms)
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (80.2ms)
+Started GET "/" for ::1 at 2017-03-26 04:05:11 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.6ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  Rendered tasks/index.html.erb within layouts/application (3.5ms)
+Completed 500 Internal Server Error in 10ms (ActiveRecord: 0.6ms)
+
+
+  
+ActionView::Template::Error (SQLite3::IOException: disk I/O error: SELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?):
+    1: <h1>Incomplete Tasks</h1>
+    2: <%= form_tag(complete_tasks_path, method: :put)  do %>
+    3:     <% for task in @incomplete_tasks %>
+    4:         <ul>
+    5:           <li>
+    6:             <%= check_box_tag 'task_ids', task.id %>
+  
+app/views/tasks/index.html.erb:3:in `block in _app_views_tasks_index_html_erb__1553178572767755668_70270018105420'
+app/views/tasks/index.html.erb:2:in `_app_views_tasks_index_html_erb__1553178572767755668_70270018105420'
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (6.0ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.1ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.6ms)
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (74.4ms)
+Started GET "/" for ::1 at 2017-03-26 04:06:07 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.5ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  Rendered tasks/index.html.erb within layouts/application (3.7ms)
+Completed 500 Internal Server Error in 10ms (ActiveRecord: 0.5ms)
+
+
+  
+ActionView::Template::Error (SQLite3::IOException: disk I/O error: SELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?):
+    1: <h1>Incomplete Tasks</h1>
+    2: <%= form_tag(complete_tasks_path, method: :put)  do %>
+    3:     <% for task in @incomplete_tasks %>
+    4:         <ul>
+    5:           <li>
+    6:             <%= check_box_tag 'task_ids[]', task.id %>
+  
+app/views/tasks/index.html.erb:3:in `block in _app_views_tasks_index_html_erb__1553178572767755668_70270036148080'
+app/views/tasks/index.html.erb:2:in `_app_views_tasks_index_html_erb__1553178572767755668_70270036148080'
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (7.1ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (2.6ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.7ms)
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (82.1ms)
+Started GET "/" for ::1 at 2017-03-26 04:06:11 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.6ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  Rendered tasks/index.html.erb within layouts/application (3.1ms)
+Completed 500 Internal Server Error in 9ms (ActiveRecord: 0.6ms)
+
+
+  
+ActionView::Template::Error (SQLite3::IOException: disk I/O error: SELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?):
+    1: <h1>Incomplete Tasks</h1>
+    2: <%= form_tag(complete_tasks_path, method: :put)  do %>
+    3:     <% for task in @incomplete_tasks %>
+    4:         <ul>
+    5:           <li>
+    6:             <%= check_box_tag 'task_ids[]', task.id %>
+  
+app/views/tasks/index.html.erb:3:in `block in _app_views_tasks_index_html_erb__1553178572767755668_70270027514900'
+app/views/tasks/index.html.erb:2:in `_app_views_tasks_index_html_erb__1553178572767755668_70270027514900'
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (5.0ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (1.9ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.8ms)
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (68.6ms)
+Started GET "/levels" for ::1 at 2017-03-26 04:07:31 +0200
+Processing by LevelsController#index as HTML
+  Rendering levels/index.html.erb within layouts/application
+  [1m[36mLevel Load (0.5ms)[0m  [1m[34mSELECT "levels".* FROM "levels"[0m
+  Rendered levels/index.html.erb within layouts/application (3.1ms)
+Completed 500 Internal Server Error in 11ms (ActiveRecord: 0.5ms)
+
+
+  
+ActionView::Template::Error (SQLite3::IOException: disk I/O error: SELECT "levels".* FROM "levels"):
+    12:   </thead>
+    13: 
+    14:   <tbody>
+    15:     <% @levels.each do |level| %>
+    16:       <tr>
+    17:         <td><%= level.name %></td>
+    18:         <td><%= level.weight %></td>
+  
+app/views/levels/index.html.erb:15:in `_app_views_levels_index_html_erb__1625013310050008401_70270035463980'
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_source.html.erb (5.3ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_trace.html.erb (6.3ms)
+  Rendering /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/_request_and_response.html.erb (0.7ms)
+  Rendered /Users/selimchiki/.rbenv/versions/2.4.0/lib/ruby/gems/2.4.0/gems/actionpack-5.0.2/lib/action_dispatch/middleware/templates/rescues/template_error.html.erb within rescues/layout (69.7ms)
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (3.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (2.5ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (2.6ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateTasks (20170320210230)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "details" text, "limit" date, "level" integer(1) DEFAULT 0)[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170320210230"]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+Migrating to ModifyColumnTasks (20170320212749)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "tasks" ADD "check" integer(1) DEFAULT 0[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "atasks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "details" text, "limit" date, "level" integer(1) DEFAULT 0, "check" integer(1) DEFAULT 0)[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "atasks" ("id","name","details","limit","level","check")
+                     SELECT "id","name","details","limit","level","check" FROM "tasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "tasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "details" text, "limit" date, "level" varchar(1) DEFAULT '0', "check" integer(1) DEFAULT 0)[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "tasks" ("id","name","details","limit","level","check")
+                     SELECT "id","name","details","limit","level","check" FROM "atasks"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "atasks"[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170320212749"]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateLevels (20170325230417)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "levels" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "weight" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170325230417"]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+Migrating to AddLevelToTasks (20170325230524)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "tasks" ADD "level_id" integer[0m
+  [1m[35m (0.0ms)[0m  [1m[34mselect sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_tasks_on_level_id" ON "tasks" ("level_id")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170325230524"]]
+  [1m[35m (2.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", 2017-03-26 02:12:16 UTC], ["updated_at", 2017-03-26 02:12:16 UTC]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_tasks_on_level_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_tasks_on_level_id' AND type='index'
+[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", :environment]]
+  [1m[35m (1.9ms)[0m  [1m[35mDROP TABLE "levels"[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE "levels" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "weight" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (1.5ms)[0m  [1m[35mDROP TABLE "tasks"[0m
+  [1m[35m (2.0ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "details" text, "limit" date, "level" varchar(1) DEFAULT '0', "check" integer(1) DEFAULT 0, "level_id" integer)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mselect sqlite_version(*)[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE  INDEX "index_tasks_on_level_id" ON "tasks" ("level_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT version FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (2.5ms)[0m  [1m[35mCREATE TABLE "levels" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "weight" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCREATE TABLE "tasks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "details" text, "limit" date, "level" varchar(1) DEFAULT '0', "check" integer(1) DEFAULT 0, "level_id" integer)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mselect sqlite_version(*)[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCREATE  INDEX "index_tasks_on_level_id" ON "tasks" ("level_id")[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT version FROM "schema_migrations"[0m
+  [1m[35m (1.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20170325230524)[0m
+  [1m[35m (1.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20170320210230),
+(20170320212749),
+(20170325230417);
+
+[0m
+  [1m[35m (2.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", 2017-03-26 02:12:24 UTC], ["updated_at", 2017-03-26 02:12:24 UTC]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", :environment], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "The Way Through the Woods"], ["weight", 9], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "The Way Through the Woods"], ["weight", 9], ["created_at", 2017-03-26 02:12:24 UTC], ["updated_at", 2017-03-26 02:12:24 UTC]]
+  [1m[35m (2.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Recalled to Life"], ["weight", 2], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Recalled to Life"], ["weight", 2], ["created_at", 2017-03-26 02:12:24 UTC], ["updated_at", 2017-03-26 02:12:24 UTC]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "The Road Less Traveled"], ["weight", 8], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "The Road Less Traveled"], ["weight", 8], ["created_at", 2017-03-26 02:12:24 UTC], ["updated_at", 2017-03-26 02:12:24 UTC]]
+  [1m[35m (2.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Dance Dance Dance"], ["weight", 2], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Dance Dance Dance"], ["weight", 2], ["created_at", 2017-03-26 02:12:24 UTC], ["updated_at", 2017-03-26 02:12:24 UTC]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "The Soldier's Art"], ["weight", 6], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "The Soldier's Art"], ["weight", 6], ["created_at", 2017-03-26 02:12:24 UTC], ["updated_at", 2017-03-26 02:12:24 UTC]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "As I Lay Dying"], ["weight", 28], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "As I Lay Dying"], ["weight", 28], ["created_at", 2017-03-26 02:12:24 UTC], ["updated_at", 2017-03-26 02:12:24 UTC]]
+  [1m[35m (2.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Precious Bane"], ["weight", 29], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Precious Bane"], ["weight", 29], ["created_at", 2017-03-26 02:12:24 UTC], ["updated_at", 2017-03-26 02:12:24 UTC]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "No Country for Old Men"], ["weight", 19], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "No Country for Old Men"], ["weight", 19], ["created_at", 2017-03-26 02:12:24 UTC], ["updated_at", 2017-03-26 02:12:24 UTC]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "The Stars' Tennis Balls"], ["weight", 6], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "The Stars' Tennis Balls"], ["weight", 6], ["created_at", 2017-03-26 02:12:24 UTC], ["updated_at", 2017-03-26 02:12:24 UTC]]
+  [1m[35m (2.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "When the Green Woods Laugh"], ["weight", 5], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "When the Green Woods Laugh"], ["weight", 5], ["created_at", 2017-03-26 02:12:24 UTC], ["updated_at", 2017-03-26 02:12:24 UTC]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "The Widening Gyre"], ["level_id", 5], ["details", "Iusto qui et necessitatibus fugit."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "The Widening Gyre"], ["details", "Iusto qui et necessitatibus fugit."], ["level_id", 5]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "In a Glass Darkly"], ["level_id", 4], ["details", "Sed ut voluptas repudiandae voluptatibus omnis repellendus aliquid deleniti."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "In a Glass Darkly"], ["details", "Sed ut voluptas repudiandae voluptatibus omnis repellendus aliquid deleniti."], ["check", 1], ["level_id", 4]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "The Lathe of Heaven"], ["level_id", 1], ["details", "Earum repellendus quo deleniti voluptatibus autem eum rem."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "The Lathe of Heaven"], ["details", "Earum repellendus quo deleniti voluptatibus autem eum rem."], ["level_id", 1]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Ring of Bright Water"], ["level_id", 9], ["details", "Fuga provident quia nesciunt molestiae."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Ring of Bright Water"], ["details", "Fuga provident quia nesciunt molestiae."], ["check", 1], ["level_id", 9]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Have His Carcase"], ["level_id", 10], ["details", "Distinctio ipsam commodi dolorum natus optio."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Have His Carcase"], ["details", "Distinctio ipsam commodi dolorum natus optio."], ["check", 1], ["level_id", 10]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "What's Become of Waring"], ["level_id", 2], ["details", "Quas id dolores dolor nihil qui est."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "What's Become of Waring"], ["details", "Quas id dolores dolor nihil qui est."], ["level_id", 2]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Unweaving the Rainbow"], ["level_id", 8], ["details", "Eius nostrum iusto et hic molestiae."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Unweaving the Rainbow"], ["details", "Eius nostrum iusto et hic molestiae."], ["check", 1], ["level_id", 8]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Tender Is the Night"], ["level_id", 4], ["details", "Et reprehenderit quo doloremque voluptas."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Tender Is the Night"], ["details", "Et reprehenderit quo doloremque voluptas."], ["check", 1], ["level_id", 4]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Dulce et Decorum Est"], ["level_id", 3], ["details", "Voluptatem ad dolorem et atque saepe labore aut corporis."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Dulce et Decorum Est"], ["details", "Voluptatem ad dolorem et atque saepe labore aut corporis."], ["level_id", 3]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "No Country for Old Men"], ["level_id", 6], ["details", "Non veniam placeat aperiam qui cupiditate enim pariatur."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "No Country for Old Men"], ["details", "Non veniam placeat aperiam qui cupiditate enim pariatur."], ["level_id", 6]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Mr Standfast"], ["level_id", 2], ["details", "Architecto rem nulla sed."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Mr Standfast"], ["details", "Architecto rem nulla sed."], ["level_id", 2]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "To Sail Beyond the Sunset"], ["level_id", 3], ["details", "Qui maiores perferendis magnam praesentium dolore reprehenderit."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "To Sail Beyond the Sunset"], ["details", "Qui maiores perferendis magnam praesentium dolore reprehenderit."], ["level_id", 3]]
+  [1m[35m (1.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Rosemary Sutcliff"], ["level_id", 1], ["details", "Quidem et consequuntur quisquam vel."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Rosemary Sutcliff"], ["details", "Quidem et consequuntur quisquam vel."], ["check", 1], ["level_id", 1]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Far From the Madding Crowd"], ["level_id", 8], ["details", "Eaque mollitia voluptatum autem unde harum."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Far From the Madding Crowd"], ["details", "Eaque mollitia voluptatum autem unde harum."], ["check", 1], ["level_id", 8]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "An Acceptable Time"], ["level_id", 10], ["details", "Iure exercitationem autem eveniet perferendis."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "An Acceptable Time"], ["details", "Iure exercitationem autem eveniet perferendis."], ["level_id", 10]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Vanity Fair"], ["level_id", 8], ["details", "Velit vitae eum recusandae libero magnam."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Vanity Fair"], ["details", "Velit vitae eum recusandae libero magnam."], ["check", 1], ["level_id", 8]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "The Last Enemy"], ["level_id", 6], ["details", "Commodi voluptas molestias pariatur soluta."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "The Last Enemy"], ["details", "Commodi voluptas molestias pariatur soluta."], ["check", 1], ["level_id", 6]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "If I Forget Thee Jerusalem"], ["level_id", 9], ["details", "Inventore distinctio amet explicabo nostrum dolores dolore expedita doloremque."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "If I Forget Thee Jerusalem"], ["details", "Inventore distinctio amet explicabo nostrum dolores dolore expedita doloremque."], ["check", 1], ["level_id", 9]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "A Scanner Darkly"], ["level_id", 6], ["details", "Delectus quaerat rem laboriosam ut ab quasi et eos."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "A Scanner Darkly"], ["details", "Delectus quaerat rem laboriosam ut ab quasi et eos."], ["level_id", 6]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "What's Become of Waring"], ["level_id", 7], ["details", "Error quo voluptates non omnis sed reprehenderit pariatur excepturi."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "What's Become of Waring"], ["details", "Error quo voluptates non omnis sed reprehenderit pariatur excepturi."], ["check", 1], ["level_id", 7]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Now Sleeps the Crimson Petal"], ["weight", 12], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Now Sleeps the Crimson Petal"], ["weight", 12], ["created_at", 2017-03-26 02:12:32 UTC], ["updated_at", 2017-03-26 02:12:32 UTC]]
+  [1m[35m (3.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "The Golden Apples of the Sun"], ["weight", 2], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "The Golden Apples of the Sun"], ["weight", 2], ["created_at", 2017-03-26 02:12:32 UTC], ["updated_at", 2017-03-26 02:12:32 UTC]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Vanity Fair"], ["weight", 18], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Vanity Fair"], ["weight", 18], ["created_at", 2017-03-26 02:12:32 UTC], ["updated_at", 2017-03-26 02:12:32 UTC]]
+  [1m[35m (4.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "The Heart Is a Lonely Hunter"], ["weight", 11], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "The Heart Is a Lonely Hunter"], ["weight", 11], ["created_at", 2017-03-26 02:12:32 UTC], ["updated_at", 2017-03-26 02:12:32 UTC]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Clouds of Witness"], ["weight", 5], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Clouds of Witness"], ["weight", 5], ["created_at", 2017-03-26 02:12:32 UTC], ["updated_at", 2017-03-26 02:12:32 UTC]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "The Glory and the Dream"], ["weight", 5], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "The Glory and the Dream"], ["weight", 5], ["created_at", 2017-03-26 02:12:32 UTC], ["updated_at", 2017-03-26 02:12:32 UTC]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Oh! To be in England"], ["weight", 22], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Oh! To be in England"], ["weight", 22], ["created_at", 2017-03-26 02:12:32 UTC], ["updated_at", 2017-03-26 02:12:32 UTC]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Frequent Hearses"], ["weight", 9], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Frequent Hearses"], ["weight", 9], ["created_at", 2017-03-26 02:12:32 UTC], ["updated_at", 2017-03-26 02:12:32 UTC]]
+  [1m[35m (1.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "Terrible Swift Sword"], ["weight", 11], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Terrible Swift Sword"], ["weight", 11], ["created_at", 2017-03-26 02:12:32 UTC], ["updated_at", 2017-03-26 02:12:32 UTC]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."name" = ? AND "levels"."weight" = ? LIMIT ?[0m  [["name", "A Farewell to Arms"], ["weight", 22], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "levels" ("name", "weight", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "A Farewell to Arms"], ["weight", 22], ["created_at", 2017-03-26 02:12:32 UTC], ["updated_at", 2017-03-26 02:12:32 UTC]]
+  [1m[35m (1.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Noli Me Tangere"], ["level_id", 3], ["details", "Blanditiis in animi itaque autem laudantium nemo."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Noli Me Tangere"], ["details", "Blanditiis in animi itaque autem laudantium nemo."], ["check", 1], ["level_id", 3]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "A Handful of Dust"], ["level_id", 2], ["details", "Beatae praesentium doloribus est harum."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "A Handful of Dust"], ["details", "Beatae praesentium doloribus est harum."], ["level_id", 2]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "East of Eden"], ["level_id", 4], ["details", "Natus in eveniet impedit et delectus pariatur iure."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "East of Eden"], ["details", "Natus in eveniet impedit et delectus pariatur iure."], ["level_id", 4]]
+  [1m[35m (1.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "If I Forget Thee Jerusalem"], ["level_id", 2], ["details", "Dicta expedita esse adipisci est eos enim."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "If I Forget Thee Jerusalem"], ["details", "Dicta expedita esse adipisci est eos enim."], ["level_id", 2]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "No Highway"], ["level_id", 1], ["details", "Natus nostrum quidem est modi quia repudiandae expedita."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "No Highway"], ["details", "Natus nostrum quidem est modi quia repudiandae expedita."], ["check", 1], ["level_id", 1]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Sleep the Brave"], ["level_id", 2], ["details", "Quaerat dolor ut sed consequatur eos."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Sleep the Brave"], ["details", "Quaerat dolor ut sed consequatur eos."], ["check", 1], ["level_id", 2]]
+  [1m[35m (2.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.2ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "When the Green Woods Laugh"], ["level_id", 3], ["details", "Rem excepturi ea eum autem sapiente labore consectetur."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "When the Green Woods Laugh"], ["details", "Rem excepturi ea eum autem sapiente labore consectetur."], ["level_id", 3]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Taming a Sea Horse"], ["level_id", 3], ["details", "Animi necessitatibus itaque nisi."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "Taming a Sea Horse"], ["details", "Animi necessitatibus itaque nisi."], ["check", 1], ["level_id", 3]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Ah, Wilderness!"], ["level_id", 8], ["details", "Quibusdam qui omnis esse."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Ah, Wilderness!"], ["details", "Quibusdam qui omnis esse."], ["level_id", 8]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Endless Night"], ["level_id", 8], ["details", "Totam ullam consequuntur commodi quasi."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Endless Night"], ["details", "Totam ullam consequuntur commodi quasi."], ["level_id", 8]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "The House of Mirth"], ["level_id", 3], ["details", "Omnis exercitationem pariatur minus."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "The House of Mirth"], ["details", "Omnis exercitationem pariatur minus."], ["check", 1], ["level_id", 3]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Look Homeward, Angel"], ["level_id", 5], ["details", "Veniam cumque dolorem aut quas odit."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Look Homeward, Angel"], ["details", "Veniam cumque dolorem aut quas odit."], ["level_id", 5]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "From Here to Eternity"], ["level_id", 8], ["details", "Et quia dolorem inventore necessitatibus voluptatem."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "From Here to Eternity"], ["details", "Et quia dolorem inventore necessitatibus voluptatem."], ["level_id", 8]]
+  [1m[35m (2.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Of Human Bondage"], ["level_id", 1], ["details", "Temporibus quo officia non."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Of Human Bondage"], ["details", "Temporibus quo officia non."], ["level_id", 1]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "To Your Scattered Bodies Go"], ["level_id", 10], ["details", "Minus maiores dolorum velit consequatur voluptate."], ["check", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 10], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "check", "level_id") VALUES (?, ?, ?, ?)[0m  [["name", "To Your Scattered Bodies Go"], ["details", "Minus maiores dolorum velit consequatur voluptate."], ["check", 1], ["level_id", 10]]
+  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Have His Carcase"], ["level_id", 3], ["details", "Cupiditate ea corporis facilis."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Have His Carcase"], ["details", "Cupiditate ea corporis facilis."], ["level_id", 3]]
+  [1m[35m (1.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "The Glory and the Dream"], ["level_id", 1], ["details", "Et eum atque ut vel vel perferendis saepe."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "The Glory and the Dream"], ["details", "Et eum atque ut vel vel perferendis saepe."], ["level_id", 1]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Eyeless in Gaza"], ["level_id", 3], ["details", "Sequi dolorem qui aperiam est illum id."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Eyeless in Gaza"], ["details", "Sequi dolorem qui aperiam est illum id."], ["level_id", 3]]
+  [1m[35m (1.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Françoise Sagan"], ["level_id", 1], ["details", "Sint sunt quo quasi impedit voluptas."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Françoise Sagan"], ["details", "Sint sunt quo quasi impedit voluptas."], ["level_id", 1]]
+  [1m[35m (2.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTask Load (0.1ms)[0m  [1m[34mSELECT  "tasks".* FROM "tasks" WHERE "tasks"."name" = ? AND "tasks"."level_id" = ? AND "tasks"."details" = ? AND "tasks"."check" = ? LIMIT ?[0m  [["name", "Fear and Trembling"], ["level_id", 10], ["details", "Sint aut deserunt adipisci facilis et aliquam rem."], ["check", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mLevel Load (0.1ms)[0m  [1m[34mSELECT  "levels".* FROM "levels" WHERE "levels"."id" = ? LIMIT ?[0m  [["id", 10], ["LIMIT", 1]]
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "tasks" ("name", "details", "level_id") VALUES (?, ?, ?)[0m  [["name", "Fear and Trembling"], ["details", "Sint aut deserunt adipisci facilis et aliquam rem."], ["level_id", 10]]
+  [1m[35m (1.9ms)[0m  [1m[36mcommit transaction[0m
+Started GET "/" for ::1 at 2017-03-26 04:12:50 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (33.6ms)
+Completed 200 OK in 416ms (Views: 370.0ms | ActiveRecord: 2.3ms)
+
+
+Started GET "/tasks/new" for ::1 at 2017-03-26 04:13:48 +0200
+Processing by TasksController#new as HTML
+  Rendering tasks/new.html.erb within layouts/application
+  [1m[36mLevel Load (0.7ms)[0m  [1m[34mSELECT "levels".* FROM "levels"[0m
+  Rendered tasks/_form.html.erb (680.6ms)
+  Rendered tasks/new.html.erb within layouts/application (685.2ms)
+Completed 200 OK in 723ms (Views: 718.4ms | ActiveRecord: 1.2ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 04:13:49 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.7ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (5.9ms)
+Completed 200 OK in 37ms (Views: 29.9ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 04:13:51 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.4ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (5.1ms)
+Completed 200 OK in 38ms (Views: 35.1ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 04:13:52 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (6.1ms)
+Completed 200 OK in 41ms (Views: 37.6ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 04:14:47 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.4ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (5.9ms)
+Completed 200 OK in 41ms (Views: 37.5ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/levels" for ::1 at 2017-03-26 04:14:48 +0200
+Processing by LevelsController#index as HTML
+  Rendering levels/index.html.erb within layouts/application
+  [1m[36mLevel Load (0.3ms)[0m  [1m[34mSELECT "levels".* FROM "levels"[0m
+  Rendered levels/index.html.erb within layouts/application (13.9ms)
+Completed 200 OK in 52ms (Views: 48.3ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 04:14:52 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.8ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (12.2ms)
+Completed 200 OK in 55ms (Views: 50.6ms | ActiveRecord: 1.2ms)
+
+
+Started GET "/tasks" for ::1 at 2017-03-26 04:15:02 +0200
+Processing by TasksController#index as HTML
+  Rendering tasks/index.html.erb within layouts/application
+  [1m[36mTask Load (0.4ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 0]]
+  [1m[36mTask Load (0.3ms)[0m  [1m[34mSELECT "tasks".* FROM "tasks" WHERE "tasks"."check" = ?[0m  [["check", 1]]
+  Rendered tasks/index.html.erb within layouts/application (6.8ms)
+Completed 200 OK in 52ms (Views: 48.3ms | ActiveRecord: 0.7ms)
+
+
+Started GET "/tasks/new" for ::1 at 2017-03-26 04:15:03 +0200
+Processing by TasksController#new as HTML
+  Rendering tasks/new.html.erb within layouts/application
+  [1m[36mLevel Load (0.3ms)[0m  [1m[34mSELECT "levels".* FROM "levels"[0m
+  Rendered tasks/_form.html.erb (5.0ms)
+  Rendered tasks/new.html.erb within layouts/application (7.5ms)
+Completed 200 OK in 48ms (Views: 45.6ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/levels" for ::1 at 2017-03-26 04:15:08 +0200
+Processing by LevelsController#index as HTML
+  Rendering levels/index.html.erb within layouts/application
+  [1m[36mLevel Load (0.4ms)[0m  [1m[34mSELECT "levels".* FROM "levels"[0m
+  Rendered levels/index.html.erb within layouts/application (21.1ms)
+Completed 200 OK in 75ms (Views: 71.9ms | ActiveRecord: 0.4ms)
+
+

@@ -5,3 +5,21 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+require 'faker'
+
+10.times do |_n|
+  Level.find_or_create_by(name: Faker::Book.title,
+                          weight: rand(1..30)
+  )
+end
+
+
+20.times do |_n|
+  Task.find_or_create_by(name: Faker::Book.title,
+                         level_id: rand(1..10),
+                         details: Faker::Lorem.sentence,
+                         check: rand(0..1)
+  )
+end
+

@@ -1,13 +1,8 @@
 class Task < ApplicationRecord
 
-    belongs_to :level
+  belongs_to :level
 
-    def self.incomplete
-        where(check: false).order('id DESC')
-    end
-
-    def self.complete
-        where(check: true).order('id DESC')
-    end
+  scope :incomplete, -> { where(check: 0) }
+  scope :complete, -> { where(check: 1) }
 
 end

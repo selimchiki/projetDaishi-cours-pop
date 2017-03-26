@@ -3,7 +3,7 @@
     <% for task in @incomplete_tasks %>
         <ul>
           <li>
-            <%= check_box_tag 'task_id[id]', task.id %>
+            <%= check_box_tag 'task_ids[]', task.id %>
             <%= task.name %>
           </li>
         </ul>
